@@ -42,6 +42,7 @@ def Knn(X_train, y_train):
     knn.fit(X_train, y_train)
     return knn
 
+# Implementing Boosting Algorithm
 def TrainBoost(k,func):
     M = [0 for i in range(0,k)]
     E = [0 for i in range(0,k)]
@@ -72,7 +73,7 @@ def TrainBoost(k,func):
         w = np.array(w)
         w = (w-w.min())/(w.max()-w.min())
     return M,E
-
+# To use ensemble to classify Tuple
 def classify_model(E,k,M,x):
     w=[0,0]
     for i in range(0,k):
@@ -82,6 +83,7 @@ def classify_model(E,k,M,x):
         w[c] = w[c] + wt
     return w.index(max(w))
 
+# Using Adaboost for better classification
 def predict(M,E,k,x_test):
     Y = []
     for i in x_test:
@@ -89,6 +91,8 @@ def predict(M,E,k,x_test):
     cm = confusion_matrix(y, Y)
     accuracy = (cm[0,0]+cm[1,1])/len(X)*100
     return cm,accuracy
+
+# Predicting the datapoints based on Logistic, NaiveBayes, KNN model
 def pred(M,k):
     acc = []
     for i in range(0,k):
@@ -100,6 +104,8 @@ def pred(M,k):
 if __name__ == "__main__":
     func = [Logistic,NaiveBayes,Knn]
     k = 9
+    # For different value of k starting from 9 to 15 checking how the model performs by using Ensemble method and Adaboost. The increment of k is done by 2
+    # K is the number of round one classifier generated per round
     while(k<=15):
         print('\nk = ',k)
         for i in range(len(func)):
