@@ -6,12 +6,14 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
+
 # Importing the Dataset
 dataset = pd.read_csv('Dataset/srp-class-csv.csv')
 dataset['CLASS'] = (dataset['CLASS'] == False).astype(int)
 X = dataset.iloc[:,:-1].values
 y = dataset.iloc[:,-1].values
 np.seterr(divide='ignore', invalid='ignore')
+
 # Generate Dataset Function
 def generateDataset(length, X, Y):
     DiX = []
@@ -22,14 +24,19 @@ def generateDataset(length, X, Y):
         DiY.append(Y[p])
     return np.array(DiX),np.array(DiY)
 
+# Defining Logistic Regression Model and fitting our data
 def Logistic(X_train, y_train):
     lg = LogisticRegression(random_state = None,solver='liblinear')
     lg.fit(X_train, y_train)
     return lg
+
+# Defining NaiveBayes model and fitting our data
 def NaiveBayes(X_train, y_train):
     nb = GaussianNB()
     nb.fit(X_train, y_train)
     return nb
+
+# Defining KNN and fitting our data
 def Knn(X_train, y_train):
     knn = KNeighborsClassifier(n_neighbors = 2, metric = 'minkowski', p = 2)
     knn.fit(X_train, y_train)
@@ -89,6 +96,7 @@ def pred(M,k):
         cm = confusion_matrix(y, Y)
         acc.append((cm[0,0]+cm[1,1])/len(X)*100)
     return acc
+
 if __name__ == "__main__":
     func = [Logistic,NaiveBayes,Knn]
     k = 9
